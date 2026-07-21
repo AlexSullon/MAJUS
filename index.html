@@ -29,8 +29,25 @@
     box-shadow:0 2px 6px rgba(0,0,0,0.06);
   }
   .logo{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
     font-size:26px;font-weight:bold;color:var(--marron);
     letter-spacing:2px;
+  }
+  .logo img{
+    width:90px; /* cambia este valor para agrandar o reducir el logo */
+    max-width:90px;
+    height:auto;
+    display:block;
+    border-radius:16px;
+    object-fit:cover;
+  }
+  @media(max-width:768px){
+    .logo img{
+      width:60px;
+      max-width:60px;
+    }
   }
   nav.desktop-nav{display:flex;gap:32px;}
   nav.desktop-nav a{
@@ -223,24 +240,11 @@
     background:var(--marron);color:#f1e8d6;padding:40px 40px 20px;
   }
   .footer-top{
-    display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;
-    margin-bottom:24px;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:24px;margin-bottom:24px;
   }
-  .legal-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:18px;margin-top:20px;
-  }
-  .legal-card{
-    background:var(--blanco);padding:22px;border-radius:16px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.05);
-  }
-  .legal-card h3{
-    margin-bottom:10px;color:var(--marron);
-  }
-  .legal-card p{
-    font-size:14px;color:#5a4d3a;line-height:1.7;
-  }
-  .footer-col h4{margin-bottom:10px;color:#fff;}
+  .footer-col h4{margin-bottom:14px;color:#fff;font-size:16px;}
+  .footer-col p, .footer-col a{display:block;font-size:14px;color:#e6d9bd;margin-bottom:8px;}
   .footer-col p, .footer-col a{display:block;font-size:14px;color:#e6d9bd;margin-bottom:6px;}
   .social-icons{display:flex;gap:14px;margin-top:8px;}
   .social-icons a{
@@ -279,7 +283,10 @@
 
 <!-- ===== NAVBAR ===== -->
 <header>
-  <div class="logo">MAJUS</div>
+  <div class="logo">
+    MAJUS
+    <img src="imagenes/logo_majus.png" alt="MAJUS logo">
+  </div>
   <nav class="desktop-nav">
     <a href="#inicio">Inicio</a>
     <a href="#categorias">Categorías</a>
@@ -384,24 +391,7 @@
     </div>
   </div>
 </section>
-<!-- ===== AVISO LEGAL ===== -->
-<section id="legal">
-  <h2 class="section-title">Aviso legal</h2>
-  <div class="legal-grid">
-    <div class="legal-card">
-      <h3>Derechos de autor</h3>
-      <p>El contenido, imágenes y textos de este sitio son propiedad de MAJUS o de sus colaboradores, y están protegidos por la legislación de derechos de autor.</p>
-    </div>
-    <div class="legal-card">
-      <h3>Protección de datos</h3>
-      <p>Respetamos tu privacidad y protejemos tus datos personales de acuerdo con la normativa vigente. No compartimos tu información sin tu consentimiento.</p>
-    </div>
-    <div class="legal-card">
-      <h3>Responsabilidad</h3>
-      <p>MAJUS no se hace responsable del uso indebido del contenido del sitio ni de cambios de precios o disponibilidad de productos.</p>
-    </div>
-  </div>
-</section>
+
 <!-- ===== DETALLE DE PRODUCTO (overlay) ===== -->
 <div class="detalle-overlay" id="detalleOverlay">
   <div class="detalle-header">
@@ -456,6 +446,12 @@
       <p>Lima, Perú</p>
       <p>WhatsApp: +51 924604802</p>
       <p>hola@majus.com</p>
+    </div>
+    <div class="footer-col">
+      <h4>Aviso legal</h4>
+      <a href="#privacidad">Política de privacidad</a>
+      <a href="#terminos">Términos y condiciones</a>
+      <a href="#proteccion">Protección de datos</a>
     </div>
   </div>
   <div class="footer-bottom">
