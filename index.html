@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAJUS | Artesanía que cuenta historias</title>
+<style>
+  :root{
+    --crema:#F7F1E3;
+    --crema-osc:#EFE6D3;
+    --verde:#5C7C4A;
+    --verde-osc:#41592F;
+    --marron:#4A3B2A;
+    --texto:#3B3226;
+    --blanco:#FFFFFF;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;}
+  body{background:var(--crema);color:var(--texto);}
+  h1,h2,h3{font-family:'Georgia','Times New Roman',serif;}
+  a{text-decoration:none;color:inherit;}
+  img{max-width:100%;display:block;}
+
+  /* ===== NAVBAR ===== */
+  header{
+    position:sticky;top:0;z-index:1000;
+    background:var(--crema);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 40px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.06);
+  }
+  .logo{
+    font-size:26px;font-weight:bold;color:var(--marron);
+    letter-spacing:2px;
+  }
+  nav.desktop-nav{display:flex;gap:32px;}
+  nav.desktop-nav a{
+    font-size:15px;color:var(--marron);font-weight:600;
+    transition:color .2s;
+  }
+  nav.desktop-nav a:hover{color:var(--verde);}
+  .cart-icon{font-size:20px;cursor:pointer;}
+  .hamburger{
+    display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;
+  }
+  .hamburger span{width:26px;height:3px;background:var(--marron);border-radius:2px;}
+
+  .mobile-nav{
+    display:none;flex-direction:column;background:var(--crema);
+    position:fixed;top:64px;left:0;right:0;z-index:999;
+    box-shadow:0 6px 10px rgba(0,0,0,0.1);
+  }
+  .mobile-nav a{
+    padding:16px 24px;border-bottom:1px solid var(--crema-osc);
+    font-weight:600;color:var(--marron);
+  }
+  .mobile-nav.open{display:flex;}
+
+  /* ===== HERO ===== */
+  .hero{
+    display:flex;align-items:center;gap:40px;
+    padding:60px 40px;
+  }
+  .hero-text{flex:1;}
+  .hero-text h1{font-size:38px;color:var(--marron);margin-bottom:16px;line-height:1.2;}
+  .hero-text p{font-size:16px;color:#6b5d47;margin-bottom:24px;}
+  .btn-primary{
+    display:inline-block;background:var(--verde);color:#fff;
+    padding:14px 26px;border-radius:6px;font-weight:600;
+    border:none;cursor:pointer;font-size:15px;
+    transition:background .2s;
+  }
+  .btn-primary:hover{background:var(--verde-osc);}
+  .hero-img{
+    flex:1;border-radius:10px;overflow:hidden;
+    background:#ddd3ba;
+  }
+  .hero-img img{width:100%;height:320px;object-fit:cover;}
+
+  /* ===== SECTION TITLES ===== */
+  section{padding:50px 40px;}
+  .section-title{font-size:26px;color:var(--marron);margin-bottom:24px;}
+
+  /* ===== CATEGORIAS ===== */
+  .categorias{
+    display:flex;gap:20px;flex-wrap:wrap;
+  }
+  .cat-card{
+    flex:1;min-width:150px;background:var(--blanco);
+    border-radius:10px;padding:20px;text-align:center;cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+    transition:transform .2s;
+  }
+  .cat-card:hover{transform:translateY(-4px);}
+  .cat-card img{width:70px;height:70px;object-fit:cover;margin:0 auto 12px;border-radius:8px;}
+  .cat-card span{font-weight:600;color:var(--marron);}
+
+  /* ===== PRODUCTOS ===== */
+  .productos-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:22px;
+  }
+  .producto-filtros{
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
+    gap:16px;margin-bottom:20px;
+  }
+  .filtro-botones{
+    display:flex;flex-wrap:wrap;gap:12px;
+  }
+  .btn-filtro{
+    border:1px solid var(--crema-osc);background:var(--blanco);
+    color:var(--marron);padding:10px 16px;border-radius:10px;
+    cursor:pointer;font-weight:600;transition:background .2s,border-color .2s,color .2s;
+  }
+  .btn-filtro.active,
+  .btn-filtro:hover{
+    background:var(--verde);border-color:var(--verde);color:#fff;
+  }
+  #buscadorProductos{
+    flex:1;min-width:200px;max-width:320px;
+    border:1px solid var(--crema-osc);border-radius:10px;padding:12px 14px;
+    color:var(--texto);background:var(--blanco);
+  }
+  .prod-card{
+    background:var(--blanco);border-radius:10px;overflow:hidden;cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,0.06);
+    transition:transform .2s;
+  }
+  .prod-card:hover{transform:translateY(-5px);}
+  .prod-card img{width:100%;height:180px;object-fit:cover;background:#ddd3ba;}
+  .prod-info{padding:14px;}
+  .prod-info h4{font-size:15px;color:var(--marron);margin-bottom:6px;}
+  .prod-info p{font-weight:bold;color:var(--verde-osc);}
+
+  /* ===== NOSOTROS ===== */
+  .nosotros{
+    display:flex;gap:40px;flex-wrap:wrap;align-items:center;
+    background:var(--crema-osc);border-radius:14px;padding:32px;
+  }
+  .nosotros-img{
+    flex:1;min-width:260px;border-radius:10px;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;background:rgba(255,255,255,0.8);
+  }
+  .nosotros-img img{width:100%;height:auto;object-fit:contain;max-height:340px;}
+  .nosotros-text{
+    flex:1;min-width:260px;display:flex;flex-direction:column;
+    justify-content:center;padding:20px 0;
+  }
+  .nosotros-text h3{color:var(--marron);margin-bottom:18px;}
+  .nosotros-text p{color:#5a4d3a;line-height:1.75;margin-bottom:20px;}
+  .features{
+    display:flex;gap:24px;flex-wrap:wrap;margin-top:30px;
+    background:rgba(255,255,255,0.8);padding:24px 20px;border-radius:18px;
+    justify-content:space-between;
+  }
+  .feature{
+    flex:1;min-width:180px;text-align:center;padding:18px 14px;
+    background:rgba(255,255,255,0.95);border-radius:18px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.05);
+  }
+  .feature img{
+    width:56px;height:56px;object-fit:contain;margin:0 auto 16px;
+  }
+  .feature h4{
+    font-size:16px;color:var(--marron);margin-bottom:10px;
+  }
+  .feature p{
+    font-size:14px;color:#5a4d3a;line-height:1.6;
+  }
+
+  /* ===== DETALLE PRODUCTO (overlay) ===== */
+  .detalle-overlay{
+    position:fixed;inset:0;background:var(--crema);
+    z-index:2000;overflow-y:auto;display:none;
+  }
+  .detalle-overlay.open{display:block;}
+  .detalle-header{
+    display:flex;align-items:center;gap:16px;padding:18px 20px;
+    border-bottom:1px solid var(--crema-osc);
+  }
+  .detalle-header button{
+    background:none;border:none;font-size:22px;cursor:pointer;color:var(--marron);
+  }
+  .detalle-header h3{color:var(--marron);}
+
+  .carrusel{
+    position:relative;max-width:500px;margin:24px auto 0;padding:0 20px;
+  }
+  .carrusel-track{
+    position:relative;width:100%;height:340px;border-radius:12px;overflow:hidden;background:#ddd3ba;
+  }
+  .carrusel-track img{
+    position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;
+    opacity:0;transition:opacity .35s ease;
+  }
+  .carrusel-track img.active{opacity:1;}
+  .carrusel-arrow{
+    position:absolute;top:50%;transform:translateY(-50%);
+    background:rgba(255,255,255,0.85);border:none;border-radius:50%;
+    width:38px;height:38px;font-size:18px;cursor:pointer;color:var(--marron);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .carrusel-arrow.left{left:10px;}
+  .carrusel-arrow.right{right:10px;}
+  .dots{display:flex;justify-content:center;gap:8px;margin-top:14px;}
+  .dot{width:9px;height:9px;border-radius:50%;background:#cfc4a9;cursor:pointer;}
+  .dot.active{background:var(--verde);}
+
+  .detalle-info{
+    max-width:500px;margin:26px auto;padding:0 20px;text-align:left;
+  }
+  .detalle-info h2{color:var(--marron);margin-bottom:8px;}
+  .detalle-info .precio{font-size:22px;color:var(--verde-osc);font-weight:bold;margin-bottom:14px;}
+  .detalle-info .descripcion{color:#5a4d3a;line-height:1.6;margin-bottom:24px;}
+  .btn-whatsapp{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    background:#25D366;color:#fff;padding:15px;border-radius:8px;
+    font-weight:bold;font-size:16px;border:none;cursor:pointer;width:100%;
+  }
+
+  /* ===== FOOTER ===== */
+  footer{
+    background:var(--marron);color:#f1e8d6;padding:40px 40px 20px;
+  }
+  .footer-top{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;
+    margin-bottom:24px;
+  }
+  .legal-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px;margin-top:20px;
+  }
+  .legal-card{
+    background:var(--blanco);padding:22px;border-radius:16px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+  }
+  .legal-card h3{
+    margin-bottom:10px;color:var(--marron);
+  }
+  .legal-card p{
+    font-size:14px;color:#5a4d3a;line-height:1.7;
+  }
+  .footer-col h4{margin-bottom:10px;color:#fff;}
+  .footer-col p, .footer-col a{display:block;font-size:14px;color:#e6d9bd;margin-bottom:6px;}
+  .social-icons{display:flex;gap:14px;margin-top:8px;}
+  .social-icons a{
+    background:rgba(255,255,255,0.15);
+    width:44px;height:44px;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;
+    transition:background .2s, transform .2s;
+    cursor:pointer;
+    touch-action:manipulation;
+  }
+  .social-icons a:hover{background:rgba(255,255,255,0.25);transform:translateY(-2px);}
+  .social-icons img{
+    width:24px;
+    height:24px;
+    display:block;
+    object-fit:contain;
+  }
+  .footer-bottom{
+    text-align:center;font-size:13px;color:#cbbf9f;
+    border-top:1px solid rgba(255,255,255,0.15);padding-top:16px;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:768px){
+    nav.desktop-nav{display:none;}
+    .hamburger{display:flex;}
+    .hero{flex-direction:column;padding:40px 20px;text-align:center;}
+    .hero-text h1{font-size:28px;}
+    section{padding:40px 20px;}
+    .nosotros{flex-direction:column;padding:24px;}
+    .carrusel-track{height:280px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<header>
+  <div class="logo">MAJUS</div>
+  <nav class="desktop-nav">
+    <a href="#inicio">Inicio</a>
+    <a href="#categorias">Categorías</a>
+    <a href="#todos">Productos</a>
+    <a href="#nosotros">Nosotros</a>
+  </nav>
+  <button class="hamburger" id="hamburgerBtn">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<nav class="mobile-nav" id="mobileNav">
+  <a href="#inicio">Inicio</a>
+  <a href="#categorias">Categorías</a>
+  <a href="#todos">Productos</a>
+  <a href="#nosotros">Nosotros</a>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="inicio">
+  <div class="hero-text">
+    <h1>Artesanía que cuenta historias</h1>
+    <p>Piezas hechas a mano con paja toquilla, elaboradas por manos expertas peruanas. Cada producto lleva una historia de tradición y cuidado.</p>
+    <a href="#productos" class="btn-primary">Explora productos</a>
+  </div>
+  <div class="hero-img">
+    <img src="imagenes/LOGO2.png" alt="Artesanía MAJUS">
+  </div>
+</section>
+
+<!-- ===== CATEGORIAS ===== -->
+<section id="categorias">
+  <h2 class="section-title">Categorías</h2>
+  <div class="categorias">
+    <div class="cat-card" onclick="scrollToCategoria('sombreros')">
+      <img src="imagenes/sombrero.png" alt="Sombreros">
+      <span>Sombreros</span>
+    </div>
+    <div class="cat-card" onclick="scrollToCategoria('bolsos')">
+      <img src="imagenes/bolso1.png" alt="Bolsos">
+      <span>Bolsos</span>
+    </div>
+    <div class="cat-card" onclick="scrollToCategoria('decoracion')">
+      <img src="imagenes/decoracion.png" alt="Decoración">
+      <span>Decoración</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TODOS LOS PRODUCTOS ===== -->
+<section id="todos">
+  <h2 class="section-title">Todos los productos</h2>
+  <div class="producto-filtros">
+    <div class="filtro-botones">
+      <button class="btn-filtro active" data-categoria="todos">Todos</button>
+      <button class="btn-filtro" data-categoria="sombreros">Sombreros</button>
+      <button class="btn-filtro" data-categoria="bolsos">Bolsos</button>
+      <button class="btn-filtro" data-categoria="decoracion">Decoración</button>
+    </div>
+    <input id="buscadorProductos" type="search" placeholder="Buscar producto..." aria-label="Buscar productos">
+  </div>
+  <div class="productos-grid" id="productosGrid">
+    <!-- Se llenan por JS -->
+  </div>
+</section>
+
+<!-- ===== PRODUCTOS DESTACADOS ===== -->
+<section id="productos">
+  <h2 class="section-title">Productos destacados</h2>
+  <div class="productos-grid" id="destacadosGrid">
+    <!-- Se llenan por JS -->
+  </div>
+</section>
+
+<!-- ===== NOSOTROS ===== -->
+<section id="nosotros">
+  <h2 class="section-title">Sobre nosotros</h2>
+  <div class="nosotros">
+    <div class="nosotros-img">
+      <img src="imagenes/logo_majus.png" alt="Nuestra historia">
+    </div>
+    <div class="nosotros-text">
+      <h3>Nuestra historia</h3>
+      <p>MAJUS nació del amor de María y Julio por nuestras raíces y del deseo de compartir la belleza de la paja toquilla con el mundo, junto a su familia. Cada pieza cuenta una historia de tradición, dedicación y comercio justo con las comunidades artesanas que la hacen posible.</p>
+      <div class="features">
+        <div class="feature">
+          <img src="imagenes/iconomano.avif" alt="Hecho a mano">
+          <h4>Hecho a mano</h4>
+          <p>Productos artesanales elaborados por manos expertas.</p>
+        </div>
+        <div class="feature">
+          <img src="imagenes/ecofriendly.jpg" alt="Eco-friendly">
+          <h4>Eco-friendly</h4>
+          <p>Utilizamos materiales naturales y sostenibles.</p>
+        </div>
+        <div class="feature">
+          <img src="imagenes/juntos.jpg" alt="Comercio justo">
+          <h4>Comercio justo</h4>
+          <p>Apoyamos a las comunidades artesanales.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===== AVISO LEGAL ===== -->
+<section id="legal">
+  <h2 class="section-title">Aviso legal</h2>
+  <div class="legal-grid">
+    <div class="legal-card">
+      <h3>Derechos de autor</h3>
+      <p>El contenido, imágenes y textos de este sitio son propiedad de MAJUS o de sus colaboradores, y están protegidos por la legislación de derechos de autor.</p>
+    </div>
+    <div class="legal-card">
+      <h3>Protección de datos</h3>
+      <p>Respetamos tu privacidad y protejemos tus datos personales de acuerdo con la normativa vigente. No compartimos tu información sin tu consentimiento.</p>
+    </div>
+    <div class="legal-card">
+      <h3>Responsabilidad</h3>
+      <p>MAJUS no se hace responsable del uso indebido del contenido del sitio ni de cambios de precios o disponibilidad de productos.</p>
+    </div>
+  </div>
+</section>
+<!-- ===== DETALLE DE PRODUCTO (overlay) ===== -->
+<div class="detalle-overlay" id="detalleOverlay">
+  <div class="detalle-header">
+    <button onclick="cerrarDetalle()">←</button>
+    <h3>MAJUS</h3>
+  </div>
+
+  <div class="carrusel">
+    <div class="carrusel-track" id="carruselTrack"></div>
+    <button class="carrusel-arrow left" onclick="cambiarImagen(-1)">‹</button>
+    <button class="carrusel-arrow right" onclick="cambiarImagen(1)">›</button>
+    <div class="dots" id="dotsContainer"></div>
+  </div>
+
+  <div class="detalle-info">
+    <h2 id="detalleNombre"></h2>
+    <div class="precio" id="detallePrecio"></div>
+    <p class="descripcion" id="detalleDescripcion"></p>
+    <button class="btn-whatsapp" onclick="irAWhatsapp()">
+      💬 Lo quiero — Comprar por WhatsApp
+    </button>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-col">
+      <h4>MAJUS</h4>
+      <p>Artesanía que cuenta historias.</p>
+      <div class="social-icons">
+        <a href="https://www.instagram.com/estilo_majus/" target="_blank">
+          <img src="imagenes/icono-logotipo-instagram.avif" alt="Instagram">
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61591628319611" target="_blank">
+          <img src="imagenes/iconofacebook.png" alt="Facebook">
+        </a>
+        <a href="https://wa.me/51999999999" target="_blank">
+          <img src="imagenes/iconowhatsapp.png" alt="WhatsApp">
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Enlaces</h4>
+      <a href="#inicio">Inicio</a>
+      <a href="#categorias">Categorías</a>
+      <a href="#productos">Productos</a>
+      <a href="#nosotros">Nosotros</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <p>Lima, Perú</p>
+      <p>WhatsApp: +51 924604802</p>
+      <p>hola@majus.com</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 MAJUS — Todos los derechos reservados.
+  </div>
+</footer>
+
+<script>
+/* ===================== DATOS DE PRODUCTOS ===================== */
+/* Reemplaza las URLs de imágenes por las tuyas reales */
+const productos = [
+  {
+    id: 1,
+    nombre: "Sombrero Panamá",
+    categoria: "sombreros",
+    precio: "S/ 450",
+    destacado: true,
+    descripcion: "Hecho 100% de paja toquilla natural por artesanos peruanos. Ligero y duradero, ideal para cualquier ocasión.",
+    imagenes: [
+      "imagenes/sombrero.png",
+      "imagenes/sombrero (2).png",
+      "imagenes/sombrero (3).png",
+      "imagenes/sombrero (4).png"
+    ]
+  },
+  {
+    id: 2,
+    nombre: "Canasta Decoración",
+    categoria: "decoracion",
+    precio: "S/ 90",
+    descripcion: "Canasta artesanal tejida a mano, perfecta para decorar tu hogar u organizar tus objetos favoritos.",
+    imagenes: [
+      "imagenes/decoracion.png",
+      "imagenes/flores.png"
+    ]
+  },
+  {
+    id: 3,
+    nombre: "Cartera Casual",
+    categoria: "bolsos",
+    destacado: true,
+    precio: "S/ 95",
+    descripcion: "Cartera tejida a mano con paja natural, resistente y con un diseño casual perfecto para el día a día.",
+    imagenes: [
+      "imagenes/bolso1.png",
+      "imagenes/bolsito2.jpg"
+    ]
+  },
+  {
+    id: 4,
+    nombre: "Sombrero Clásico",
+    categoria: "sombreros",
+    precio: "S/ 380",
+    descripcion: "Diseño tradicional elaborado con fibras naturales, cómodo y elegante para el día a día.",
+    imagenes: [
+      "imagenes/sombrero (2).png",
+      "imagenes/sombrero (3).png"
+    ]
+  }
+];
+
+const numeroWhatsapp = "51924604802"; // <-- Cambia por tu número real (con código de país, sin +)
+
+/* ===================== RENDER PRODUCTOS ===================== */
+const grid = document.getElementById('productosGrid');
+const destacadosGrid = document.getElementById('destacadosGrid');
+const filtrosBotones = document.querySelectorAll('.btn-filtro');
+const buscadorProductos = document.getElementById('buscadorProductos');
+let categoriaActiva = 'todos';
+let terminoBusqueda = '';
+
+function renderProductos(items, container){
+  container.innerHTML = '';
+  if(!items.length){
+    container.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#5a4d3a;padding:24px;border-radius:12px;background:rgba(255,255,255,0.6);">No se encontraron productos.</div>';
+    return;
+  }
+  items.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'prod-card';
+    card.dataset.categoria = p.categoria;
+    card.innerHTML = `
+      <img src="${p.imagenes[0]}" alt="${p.nombre}">
+      <div class="prod-info">
+        <h4>${p.nombre}</h4>
+        <p>${p.precio}</p>
+      </div>
+    `;
+    card.addEventListener('click', () => abrirDetalle(p.id));
+    container.appendChild(card);
+  });
+}
+
+function aplicarFiltro(){
+  const term = terminoBusqueda.trim().toLowerCase();
+  const productosFiltrados = productos.filter(p => {
+    const coincideCategoria = categoriaActiva === 'todos' || p.categoria === categoriaActiva;
+    const texto = `${p.nombre} ${p.descripcion} ${p.categoria}`.toLowerCase();
+    const coincideBusqueda = !term || texto.includes(term);
+    return coincideCategoria && coincideBusqueda;
+  });
+  renderProductos(productosFiltrados, grid);
+}
+
+function renderDestacados(){
+  const destacados = productos.filter(p => p.destacado);
+  renderProductos(destacados, destacadosGrid);
+}
+
+filtrosBotones.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filtrosBotones.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    categoriaActiva = btn.dataset.categoria;
+    aplicarFiltro();
+  });
+});
+
+buscadorProductos.addEventListener('input', (e) => {
+  terminoBusqueda = e.target.value;
+  aplicarFiltro();
+});
+
+renderProductos(productos, grid);
+renderDestacados();
+
+function scrollToCategoria(cat){
+  categoriaActiva = cat;
+  terminoBusqueda = '';
+  buscadorProductos.value = '';
+  filtrosBotones.forEach(b => {
+    b.classList.toggle('active', b.dataset.categoria === cat);
+  });
+  aplicarFiltro();
+  document.getElementById('todos').scrollIntoView({behavior:'smooth'});
+}
+
+/* ===================== MENU HAMBURGUESA ===================== */
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const mobileNav = document.getElementById('mobileNav');
+hamburgerBtn.addEventListener('click', () => {
+  mobileNav.classList.toggle('open');
+});
+mobileNav.querySelectorAll('a').forEach(a=>{
+  a.addEventListener('click', ()=> mobileNav.classList.remove('open'));
+});
+
+/* ===================== DETALLE DE PRODUCTO / CARRUSEL ===================== */
+let productoActual = null;
+let indiceImagen = 0;
+
+function abrirDetalle(id){
+  productoActual = productos.find(p => p.id === id);
+  indiceImagen = 0;
+
+  document.getElementById('detalleNombre').textContent = productoActual.nombre;
+  document.getElementById('detallePrecio').textContent = productoActual.precio;
+  document.getElementById('detalleDescripcion').textContent = productoActual.descripcion;
+
+  const track = document.getElementById('carruselTrack');
+  track.innerHTML = '';
+  productoActual.imagenes.forEach((src, i) => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.className = i === 0 ? 'active' : '';
+    track.appendChild(img);
+  });
+
+  renderDots();
+  document.getElementById('detalleOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Soporte de swipe (deslizar en móvil)
+  let startX = 0;
+  track.ontouchstart = (e) => { startX = e.touches[0].clientX; };
+  track.ontouchend = (e) => {
+    const endX = e.changedTouches[0].clientX;
+    if (startX - endX > 50) cambiarImagen(1);
+    else if (endX - startX > 50) cambiarImagen(-1);
+  };
+}
+
+function cerrarDetalle(){
+  document.getElementById('detalleOverlay').classList.remove('open');
+  document.body.style.overflow = 'auto';
+}
+
+function renderDots(){
+  const dotsContainer = document.getElementById('dotsContainer');
+  dotsContainer.innerHTML = '';
+  productoActual.imagenes.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === indiceImagen ? ' active' : '');
+    dot.addEventListener('click', () => {
+      indiceImagen = i;
+      actualizarCarrusel();
+    });
+    dotsContainer.appendChild(dot);
+  });
+}
+
+function cambiarImagen(direccion){
+  const total = productoActual.imagenes.length;
+  indiceImagen = (indiceImagen + direccion + total) % total;
+  actualizarCarrusel();
+}
+
+function actualizarCarrusel(){
+  const imgs = document.querySelectorAll('#carruselTrack img');
+  imgs.forEach((img, i) => img.classList.toggle('active', i === indiceImagen));
+  const dots = document.querySelectorAll('.dot');
+  dots.forEach((dot, i) => dot.classList.toggle('active', i === indiceImagen));
+}
+
+/* ===================== BOTON WHATSAPP ===================== */
+function irAWhatsapp(){
+  const mensaje = `Hola MAJUS! Estoy interesado/a en el producto: ${productoActual.nombre} (${productoActual.precio}). ¿Me pueden dar más información?`;
+  const url = `https://wa.me/${numeroWhatsapp}?text=${encodeURIComponent(mensaje)}`;
+  window.open(url, '_blank');
+}
+</script>
+
+</body>
+</html>
