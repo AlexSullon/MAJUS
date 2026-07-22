@@ -37,10 +37,10 @@
   }
   .logo img{
     width:90px; /* cambia este valor para agrandar o reducir el logo */
-    max-width:90px;
+    max-width:90px; 
     height:auto;
     display:block;
-    border-radius:16px;
+    border-radius: 100px;
     object-fit:cover;
   }
   @media(max-width:768px){
@@ -158,7 +158,14 @@
     display:flex;align-items:center;justify-content:center;
     padding:20px;background:rgba(255,255,255,0.8);
   }
-  .nosotros-img img{width:100%;height:auto;object-fit:contain;max-height:340px;}
+  .nosotros-img img{
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    overflow: hidden;
+    padding: 0;
+    background: transparent;
+  }
   .nosotros-text{
     flex:1;min-width:260px;display:flex;flex-direction:column;
     justify-content:center;padding:20px 0;
@@ -204,10 +211,10 @@
     position:relative;max-width:500px;margin:24px auto 0;padding:0 20px;
   }
   .carrusel-track{
-    position:relative;width:100%;height:340px;border-radius:12px;overflow:hidden;background:#ddd3ba;
+    position:relative;width:100%;height:460px;border-radius:12px;overflow:hidden;background:#ddd3ba;
   }
   .carrusel-track img{
-    position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;
+    position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;
     opacity:0;transition:opacity .35s ease;
   }
   .carrusel-track img.active{opacity:1;}
@@ -257,10 +264,11 @@
   }
   .social-icons a:hover{background:rgba(255,255,255,0.25);transform:translateY(-2px);}
   .social-icons img{
-    width:24px;
-    height:24px;
+    width:40px;
+    height:40px;
     display:block;
     object-fit:contain;
+    border-radius: 60px; /* más suave */
   }
   .footer-bottom{
     text-align:center;font-size:13px;color:#cbbf9f;
@@ -275,7 +283,7 @@
     .hero-text h1{font-size:28px;}
     section{padding:40px 20px;}
     .nosotros{flex-direction:column;padding:24px;}
-    .carrusel-track{height:280px;}
+    .carrusel-track{height:380px;}
   }
 </style>
 </head>
@@ -326,7 +334,7 @@
       <span>Sombreros</span>
     </div>
     <div class="cat-card" onclick="scrollToCategoria('bolsos')">
-      <img src="imagenes/bolso1.png" alt="Bolsos">
+      <img src="imagenes/cartera_cuadrada_calada.jpg" alt="Bolsos">
       <span>Bolsos</span>
     </div>
     <div class="cat-card" onclick="scrollToCategoria('decoracion')">
@@ -411,7 +419,7 @@
     <div class="precio" id="detallePrecio"></div>
     <p class="descripcion" id="detalleDescripcion"></p>
     <button class="btn-whatsapp" onclick="irAWhatsapp()">
-      💬 Lo quiero — Comprar por WhatsApp
+      Lo quiero — Comprar por WhatsApp
     </button>
   </div>
 </div>
@@ -424,13 +432,13 @@
       <p>Artesanía que cuenta historias.</p>
       <div class="social-icons">
         <a href="https://www.instagram.com/estilo_majus/" target="_blank">
-          <img src="imagenes/icono-logotipo-instagram.avif" alt="Instagram">
+          <img src="imagenes/instagram-logo.jpg" alt="Instagram" style="width:35px;height:35px;border-radius: 200px;" >
         </a>
         <a href="https://www.facebook.com/profile.php?id=61591628319611" target="_blank">
-          <img src="imagenes/iconofacebook.png" alt="Facebook">
+          <img src="imagenes/iconofacebook.png" alt="Facebook" style="width:35px;height:35px;">
         </a>
-        <a href="https://wa.me/51999999999" target="_blank">
-          <img src="imagenes/iconowhatsapp.png" alt="WhatsApp">
+        <a href="https://wa.me/51924604802" target="_blank">
+          <img src="imagenes/icono-logotipo-whatsapp_619626-183.avif" alt="WhatsApp" style="width:35px;height:35px;">
         </a>
       </div>
     </div>
@@ -443,15 +451,14 @@
     </div>
     <div class="footer-col">
       <h4>Contacto</h4>
-      <p>Lima, Perú</p>
+      <p>Catacaos-Piura, Perú</p>
       <p>WhatsApp: +51 924604802</p>
-      <p>hola@majus.com</p>
     </div>
     <div class="footer-col">
       <h4>Aviso legal</h4>
-      <a href="#privacidad">Política de privacidad</a>
-      <a href="#terminos">Términos y condiciones</a>
-      <a href="#proteccion">Protección de datos</a>
+      <a href="/documentos/politica_aip.pdf" target="_blank" >Política de privacidad</a>
+      <a href="/documentos/TÉRMINOS Y CONDICIONES - MAJUS.pdf" target="_blank" >Términos y condiciones</a>
+      <a href="/documentos/LEY29733.pdf" target="_blank" >Protección de datos</a>
     </div>
   </div>
   <div class="footer-bottom">
@@ -465,11 +472,11 @@
 const productos = [
   {
     id: 1,
-    nombre: "Sombrero Panamá",
+    nombre: "Sombrero Tradicional",
     categoria: "sombreros",
     precio: "S/ 450",
     destacado: true,
-    descripcion: "Hecho 100% de paja toquilla natural por artesanos peruanos. Ligero y duradero, ideal para cualquier ocasión.",
+    descripcion: "Sombrero artesanal cargado de tradición e historia, elaborado 100% a mano con fibras naturales. <br> Protege del sol y a la vez se luce como un símbolo de identidad y elegancia. <br> Ideal para damas, caballeros, turistas y locales que buscan un accesorio con estilo propio.",
     imagenes: [
       "imagenes/sombrero.png",
       "imagenes/sombrero (2).png",
@@ -479,36 +486,96 @@ const productos = [
   },
   {
     id: 2,
-    nombre: "Canasta Decoración",
-    categoria: "decoracion",
+    nombre: "Cartera media luna",
+    categoria: "bolsos",
     precio: "S/ 90",
-    descripcion: "Canasta artesanal tejida a mano, perfecta para decorar tu hogar u organizar tus objetos favoritos.",
+    descripcion: "Cartera artesanal tejida a mano en fibra natural, disponible en tono natural o en colores como el marrón. <br> Ideal para llevar tus accesorios del día a día con estilo. <br> Perfecta para quienes buscan combinar comodidad, tradición y un toque de moda sostenible en cada salida.",
     imagenes: [
-      "imagenes/decoracion.png",
-      "imagenes/flores.png"
+      "imagenes/cartera_medialuna.jpg",
+      "imagenes/cartera_medialuna (2).jpg",
+      "imagenes/cartera_medialuna (3).jpg",
+      "imagenes/cartera_medialuna (4).jpg",
     ]
   },
   {
     id: 3,
-    nombre: "Cartera Casual",
+    nombre: "Cartera cuadrada calada",
     categoria: "bolsos",
     destacado: true,
     precio: "S/ 95",
-    descripcion: "Cartera tejida a mano con paja natural, resistente y con un diseño casual perfecto para el día a día.",
+    descripcion: "Cartera de diseño calado, tejida artesanalmente en color natural o en tonos variados. <br> Pensada para quienes disfrutan de la comodidad sin dejar de lucir un estilo moderno. <br> Un accesorio que combina tradición, cultura y moda sostenible en una sola pieza.",
     imagenes: [
-      "imagenes/bolso1.png",
-      "imagenes/bolsito2.jpg"
+      "imagenes/cartera_cuadrada_calada.jpg",
+      "imagenes/cartera_cuadrada_calada (2).jpg",
+      "imagenes/cartera_cuadrada_calada (3).jpg", 
+      "imagenes/cartera_cuadrada_calada (4).jpg",
+      "imagenes/cartera_cuadrada_calada (5).jpg",
     ]
   },
   {
     id: 4,
-    nombre: "Sombrero Clásico",
-    categoria: "sombreros",
-    precio: "S/ 380",
-    descripcion: "Diseño tradicional elaborado con fibras naturales, cómodo y elegante para el día a día.",
+    nombre: "Flores (tejidas)",
+    categoria: "decoracion",
+    precio: "S/ ",
+    descripcion: "Flores artesanales tejidas a mano, muy utilizadas en florerías, cestas decorativas y arreglos para el hogar. <br> Perfectas para dar la bienvenida, decorar mesas y mostradores, o simplemente embellecer cualquier espacio.<br> Un detalle natural y duradero que nunca pasa de moda. ",
     imagenes: [
-      "imagenes/sombrero (2).png",
-      "imagenes/sombrero (3).png"
+      "imagenes/flores.png",
+      "imagenes/flores (2).png",
+      "imagenes/flores (3).png",
+      "imagenes/flores (5).png",
+    ]
+  },
+  {
+    id: 5,
+    nombre: "Porta cubiertos",
+    categoria: "decoracion",
+    precio: "S/ ",
+    descripcion: "Porta cubiertos artesanal que mantiene los cubiertos ordenados y siempre al alcance de los comensales. <br>Ideal para mesas de restaurantes rústicos, campestres y espacios con estilo natural. <br> Suma un toque cálido y auténtico a cualquier mesa. ",
+    imagenes: [
+      "imagenes/porta_cubiertos.png",
+      "imagenes/porta_cubiertos (2).png",
+    ]
+  },
+  {
+    id: 6,
+    nombre: "Miniaturas de sombreros y canastas",
+    categoria: "decoracion",
+    destacado: true,
+    precio: "S/ ",
+    descripcion: "Réplicas en miniatura de nuestros sombreros y canastas, perfectas como piezas de decoración, colección o incluso como llaveros. <br>Ideales para el uso cotidiano o como detalle de recuerdo.<br> Un pedacito de nuestra tradición artesanal en formato pequeño y coleccionable. ",
+    imagenes: [
+      "imagenes/miniaturas_sombreros_canastas.png",
+      "imagenes/miniaturas_sombreros_canastas (2).png",
+      "imagenes/miniaturas_sombreros_canastas (3).png",
+      "imagenes/miniaturas_sombreros_canastas (2).jpeg",
+      "imagenes/miniaturas_sombreros_canastas.jpeg",
+    ]
+  },
+  {
+    id: 7,
+    nombre: "Panera redonda tupida con diseño",
+    categoria: "decoracion",
+    precio: "S/ ",
+    descripcion: "Panera redonda de tejido tupido con diseño decorativo, ideal para guardar pan, frutas o verduras.<br> Funciona también como pieza decorativa en eventos especiales, restaurantes, picanterías y cafeterías.<br> Combina funcionalidad y estética artesanal en un solo producto",
+    imagenes: [
+      "imagenes/panera_redonda_tupida.png",
+      "imagenes/panera_redonda_tupida (2).jpeg",
+      "imagenes/panera_redonda_tupida (3).jpeg",
+      "imagenes/panera_redonda_tupida.jpeg",
+    ]
+  },
+  {
+    id: 8,
+    nombre: "Panera ovalada calada",
+    categoria: "decoracion",
+    precio: "S/ ",
+    descripcion: "Panera ovalada de tejido calado, perfecta para guardar pan, frutas y verduras mientras aporta un toque decorativo natural a tu mesa. <br> Su diseño abierto le da un aire ligero y artesanal, ideal para el hogar o negocios gastronómicos.",
+    imagenes: [
+      "imagenes/panera_ovalada_calada.png",
+      "imagenes/panera_ovalada_calada (2).png",
+      "imagenes/panera_ovalada_calada (3).png",
+      "imagenes/panera_ovalada_calada (4).png",
+      "imagenes/panera_ovalada_calada (5).png",
     ]
   }
 ];
@@ -609,7 +676,24 @@ function abrirDetalle(id){
 
   document.getElementById('detalleNombre').textContent = productoActual.nombre;
   document.getElementById('detallePrecio').textContent = productoActual.precio;
-  document.getElementById('detalleDescripcion').textContent = productoActual.descripcion;
+  // Preparar descripción: decodificar entidades y permitir HTML (<br>, <p>, <a>)
+  const descripcionRaw = productoActual.descripcion || '';
+  function decodeHtmlEntities(str){
+    const txt = document.createElement('textarea');
+    txt.innerHTML = str;
+    return txt.value;
+  }
+  const descripcionDecoded = decodeHtmlEntities(descripcionRaw);
+  const contieneHtml = /<[^>]+>/.test(descripcionDecoded);
+  if (contieneHtml) {
+    document.getElementById('detalleDescripcion').innerHTML = descripcionDecoded;
+  } else {
+    const descripcionHtml = descripcionDecoded
+      .split('\n\n')
+      .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`)
+      .join('');
+    document.getElementById('detalleDescripcion').innerHTML = descripcionHtml;
+  }
 
   const track = document.getElementById('carruselTrack');
   track.innerHTML = '';
