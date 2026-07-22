@@ -858,8 +858,30 @@ let categoriaActiva = 'todos';
 let terminoBusqueda = '';
 let paginaActual = 1;
 let paginaDestacadosActual = 1;
+let isRestoringFromUrl = false;
 
-function renderProductos(items, container, currentPage = 1, pageSize = ITEMS_PER_PAGE, paginationContainer = null, onPageChange = null){
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
+function getUrlParams(){
+  return new URLSearchParams(window.location.search);
+}
+
+function updateUrlParams(values = {}){
+  const params = getUrlParams();
+  Object.entries(values).forEach(([key, value]) => {
+    if (value === null || value === undefined || value === '') {
+      params.delete(key);
+    } else {
+      params.set(key, value);
+    }
+  });
+  const query = params.toString();
+  history.replaceState(history.state, '', window.location.pathname + (query ? `?${query}` : ''));
+}
+
+function renderProductos(items, container, currentPage = 1, pageSize = ITEMS_PER_PAGE, paginationContainer = null, onPageChange = null, scrollOnUpdate = false){
   container.classList.add('fade-grid');
   if (paginationContainer) {
     paginationContainer.style.pointerEvents = 'none';
@@ -879,32 +901,29 @@ function renderProductos(items, container, currentPage = 1, pageSize = ITEMS_PER
     const pageItems = items.slice(start, start + pageSize);
 
     pageItems.forEach(p => {
-    const card = document.createElement('div');
-    card.className = 'prod-card';
-    card.dataset.categoria = p.categoria;
-    card.innerHTML = `
-      <img src="${p.imagenes[0]}" alt="${p.nombre}">
-      <div class="prod-info">
-        <h4>${p.nombre}</h4>
-        <p>${p.precio}</p>
-      </div>
-    `;
-    card.addEventListener('click', () => abrirDetalle(p.id));
-    container.appendChild(card);
-  });
+      const card = document.createElement('div');
+      card.className = 'prod-card';
+      card.dataset.categoria = p.categoria;
+      card.innerHTML = `
+        <img src="${p.imagenes[0]}" alt="${p.nombre}">
+        <div class="prod-info">
+          <h4>${p.nombre}</h4>
+          <p>${p.precio}</p>
+        </div>
+      `;
+      card.addEventListener('click', () => abrirDetalle(p.id));
+      container.appendChild(card);
+    });
 
-  if (paginationContainer && typeof onPageChange === 'function') {
-    renderPagination(items.length, currentPage, pageSize, paginationContainer, onPageChange);
-  }
+    if (paginationContainer && typeof onPageChange === 'function') {
+      renderPagination(items.length, currentPage, pageSize, paginationContainer, onPageChange);
+    }
 
-  const sectionId = container.id === 'productosGrid' ? 'todos' : container.id === 'destacadosGrid' ? 'productos' : null;
-  if (sectionId) {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      const rect = section.getBoundingClientRect();
-      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-      const isMostlyVisible = rect.top >= 0 && rect.bottom <= viewportHeight;
-      if (!isMostlyVisible) {
+    if (scrollOnUpdate) {
+      const sectionId = container.id === 'productosGrid' ? 'todos' : container.id === 'destacadosGrid' ? 'productos' : null;
+      if (sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
         section.scrollIntoView({behavior:'smooth', block:'start'});
       }
     }
@@ -961,8 +980,7 @@ function renderPagination(totalItems, currentPage, pageSize, container, onPageCh
   container.appendChild(nextBtn);
 }
 
-function aplicarFiltro(){
-  paginaActual = 1;
+function aplicarFiltro(scrollOnUpdate = false){
   const term = terminoBusqueda.trim().toLowerCase();
   const productosFiltrados = productos.filter(p => {
     const coincideCategoria = categoriaActiva === 'todos' || p.categoria === categoriaActiva;
@@ -971,23 +989,33 @@ function aplicarFiltro(){
     return coincideCategoria && coincideBusqueda;
   });
 
-  const actualizarProductos = (page) => {
+  if (!scrollOnUpdate) {
+    paginaActual = Number(getUrlParams().get('page')) || 1;
+  }
+
+  const actualizarProductos = (page, scroll = false) => {
     paginaActual = page;
-    renderProductos(productosFiltrados, grid, paginaActual, ITEMS_PER_PAGE, productosPagination, actualizarProductos);
+    updateUrlParams({ cat: categoriaActiva, page: paginaActual });
+    renderProductos(productosFiltrados, grid, paginaActual, ITEMS_PER_PAGE, productosPagination, (nextPage) => actualizarProductos(nextPage, true), scroll);
   };
 
-  actualizarProductos(paginaActual);
+  actualizarProductos(paginaActual, scrollOnUpdate);
 }
 
-function renderDestacados(){
+function renderDestacados(scrollOnUpdate = false){
   const destacados = productos.filter(p => p.destacado);
 
-  const actualizarDestacados = (page) => {
+  if (!scrollOnUpdate) {
+    paginaDestacadosActual = Number(getUrlParams().get('destPage')) || 1;
+  }
+
+  const actualizarDestacados = (page, scroll = false) => {
     paginaDestacadosActual = page;
-    renderProductos(destacados, destacadosGrid, paginaDestacadosActual, DESTACADOS_PER_PAGE, destacadosPagination, actualizarDestacados);
+    updateUrlParams({ destPage: paginaDestacadosActual });
+    renderProductos(destacados, destacadosGrid, paginaDestacadosActual, DESTACADOS_PER_PAGE, destacadosPagination, (nextPage) => actualizarDestacados(nextPage, true), scroll);
   };
 
-  actualizarDestacados(paginaDestacadosActual);
+  actualizarDestacados(paginaDestacadosActual, scrollOnUpdate);
 }
 
 filtrosBotones.forEach(btn => {
@@ -1003,9 +1031,6 @@ buscadorProductos.addEventListener('input', (e) => {
   terminoBusqueda = e.target.value;
   aplicarFiltro();
 });
-
-aplicarFiltro();
-renderDestacados();
 
 function scrollToCategoria(cat){
   categoriaActiva = cat;
@@ -1031,6 +1056,7 @@ mobileNav.querySelectorAll('a').forEach(a=>{
 /* ===================== DETALLE DE PRODUCTO / CARRUSEL ===================== */
 let productoActual = null;
 let indiceImagen = 0;
+let detalleOpenFromPush = false;
 
 function resetDetalleOverlay(){
   productoActual = null;
@@ -1042,13 +1068,25 @@ function resetDetalleOverlay(){
   document.getElementById('dotsContainer').innerHTML = '';
 }
 
-function abrirDetalle(id){
+function abrirDetalle(id, options = {}){
+  const { historyAction = 'push', fromPopState = false } = options;
   resetDetalleOverlay();
   productoActual = productos.find(p => p.id === id);
+  if (!productoActual) return;
   indiceImagen = 0;
 
-  if (!history.state || !history.state.detalleOpen) {
-    history.pushState({detalleOpen: true}, '', window.location.pathname + '#detalle');
+  const currentParams = getUrlParams();
+  currentParams.set('detalle', id);
+  const url = `${window.location.pathname}?${currentParams.toString()}`;
+
+  if (historyAction === 'push') {
+    history.pushState({detalleOpen: true, detalleId: id}, '', url);
+    detalleOpenFromPush = true;
+  } else if (historyAction === 'replace') {
+    history.replaceState({detalleOpen: true, detalleId: id}, '', url);
+    detalleOpenFromPush = false;
+  } else {
+    detalleOpenFromPush = false;
   }
 
   document.getElementById('detalleNombre').textContent = productoActual.nombre;
@@ -1084,7 +1122,6 @@ function abrirDetalle(id){
   const detalleOverlay = document.getElementById('detalleOverlay');
   detalleOverlay.classList.add('open');
   detalleOverlay.scrollTop = 0;
-  window.scrollTo(0, 0);
   document.body.style.overflow = 'hidden';
 
   // Soporte de swipe (deslizar en móvil)
@@ -1102,14 +1139,79 @@ function cerrarDetalle(options = {}){
   document.getElementById('detalleOverlay').classList.remove('open');
   document.body.style.overflow = 'auto';
   resetDetalleOverlay();
-  if (!fromPopState && history.state && history.state.detalleOpen) {
+  detalleOpenFromPush = false;
+
+  if (fromPopState) {
+    return;
+  }
+
+  if (history.state && history.state.detalleOpen && detalleOpenFromPush) {
     history.back();
+  } else {
+    const params = getUrlParams();
+    params.delete('detalle');
+    const query = params.toString();
+    const newState = Object.assign({}, history.state || {}, { detalleOpen: false, detalleId: null });
+    history.replaceState(newState, '', window.location.pathname + (query ? `?${query}` : ''));
   }
 }
 
+function restoreStateFromUrl(){
+  const params = getUrlParams();
+  const cat = params.get('cat');
+  const hasPageParam = params.has('page');
+  const page = hasPageParam ? Number(params.get('page')) || 1 : 1;
+  const hasDestPageParam = params.has('destPage');
+  const destPage = hasDestPageParam ? Number(params.get('destPage')) || 1 : 1;
+  const detalleId = params.get('detalle');
+
+  if (cat) {
+    categoriaActiva = cat;
+    filtrosBotones.forEach(b => {
+      b.classList.toggle('active', b.dataset.categoria === categoriaActiva);
+    });
+  }
+
+  paginaActual = page;
+  paginaDestacadosActual = destPage;
+
+  isRestoringFromUrl = true;
+  aplicarFiltro(false);
+  renderDestacados(false);
+  isRestoringFromUrl = false;
+
+  if (detalleId) {
+    const id = Number(detalleId);
+    const producto = productos.find(p => p.id === id);
+    if (producto) {
+      abrirDetalle(id, { historyAction: 'replace' });
+    }
+    return;
+  }
+
+  const inicioSection = document.getElementById('inicio');
+  if (inicioSection) {
+    inicioSection.scrollIntoView({behavior:'auto', block:'start'});
+  }
+}
+
+
+window.addEventListener('load', () => {
+  restoreStateFromUrl();
+});
+
 window.addEventListener('popstate', () => {
+  const params = getUrlParams();
+  const detalleId = params.get('detalle');
   const overlay = document.getElementById('detalleOverlay');
-  if (overlay.classList.contains('open')) {
+
+  if (detalleId) {
+    const id = Number(detalleId);
+    const producto = productos.find(p => p.id === id);
+    if (producto && !overlay.classList.contains('open')) {
+      abrirDetalle(id, { historyAction: 'none', fromPopState: true });
+    }
+  } else if (overlay.classList.contains('open')) {
     cerrarDetalle({ fromPopState: true });
   }
 });
