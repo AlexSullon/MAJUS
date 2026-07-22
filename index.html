@@ -13,9 +13,14 @@
     --marron:#4A3B2A;
     --texto:#3B3226;
     --blanco:#FFFFFF;
+    --font-base:16px;
+    --font-large:2.4rem;
+    --font-medium:1rem;
+    --font-small:0.95rem;
   }
   *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;}
-  body{background:var(--crema);color:var(--texto);}
+  html{scroll-behavior:smooth;}
+  body{background:var(--crema);color:var(--texto);font-size:var(--font-base);line-height:1.5;}
   h1,h2,h3{font-family:'Georgia','Times New Roman',serif;}
   a{text-decoration:none;color:inherit;}
   img{max-width:100%;display:block;}
@@ -32,8 +37,8 @@
     display:inline-flex;
     align-items:center;
     gap:10px;
-    font-size:26px;font-weight:bold;color:var(--marron);
-    letter-spacing:2px;
+    font-size:30px;font-weight:bold;color:var(--marron);
+    letter-spacing:5px;
   }
   .logo img{
     width:90px; /* cambia este valor para agrandar o reducir el logo */
@@ -51,7 +56,7 @@
   }
   nav.desktop-nav{display:flex;gap:32px;}
   nav.desktop-nav a{
-    font-size:15px;color:var(--marron);font-weight:600;
+    font-size:calc(var(--font-medium) - 1px);color:var(--marron);font-weight:600;
     transition:color .2s;
   }
   nav.desktop-nav a:hover{color:var(--verde);}
@@ -78,8 +83,8 @@
     padding:60px 40px;
   }
   .hero-text{flex:1;}
-  .hero-text h1{font-size:38px;color:var(--marron);margin-bottom:16px;line-height:1.2;}
-  .hero-text p{font-size:16px;color:#6b5d47;margin-bottom:24px;}
+  .hero-text h1{font-size:var(--font-large);color:var(--marron);margin-bottom:16px;line-height:1.2;}
+  .hero-text p{font-size:var(--font-medium);color:#6b5d47;margin-bottom:24px;}
   .btn-primary{
     display:inline-block;background:var(--verde);color:#fff;
     padding:14px 26px;border-radius:6px;font-weight:600;
@@ -115,6 +120,50 @@
   .productos-grid{
     display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
     gap:22px;
+    transition:opacity .26s ease;
+  }
+  .productos-grid.fade-grid{
+    opacity:.35;
+  }
+  .pagination{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:8px;
+    padding:16px 0 26px;
+  }
+  .pagination-btn{
+    background:var(--blanco);
+    color:var(--marron);
+    border:1px solid var(--crema-osc);
+    border-radius:999px;
+    padding:10px 14px;
+    min-width:42px;
+    font-weight:700;
+    cursor:pointer;
+    transition:background .2s,transform .2s;
+  }
+  .pagination-btn:hover:not(:disabled){
+    background:var(--verde);
+    color:#fff;
+    transform:translateY(-1px);
+  }
+  .pagination-btn.active{
+    background:var(--verde);
+    border-color:var(--verde);
+    color:#fff;
+  }
+  .pagination-btn:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+  }
+  .pagination-ellipsis{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:28px;
+    color:#5a4d3a;
+    font-size:0.95rem;
   }
   .producto-filtros{
     display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
@@ -145,8 +194,8 @@
   .prod-card:hover{transform:translateY(-5px);}
   .prod-card img{width:100%;height:180px;object-fit:cover;background:#ddd3ba;}
   .prod-info{padding:14px;}
-  .prod-info h4{font-size:15px;color:var(--marron);margin-bottom:6px;}
-  .prod-info p{font-weight:bold;color:var(--verde-osc);}
+  .prod-info h4{font-size:calc(var(--font-medium) - 1px);color:var(--marron);margin-bottom:6px;}
+  .prod-info p{font-size:var(--font-small);font-weight:bold;color:var(--verde-osc);}
 
   /* ===== NOSOTROS ===== */
   .nosotros{
@@ -199,13 +248,61 @@
   }
   .detalle-overlay.open{display:block;}
   .detalle-header{
-    display:flex;align-items:center;gap:16px;padding:18px 20px;
+    position:sticky;
+    top:0;
+    z-index:10;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:16px;
+    padding:18px 20px;
     border-bottom:1px solid var(--crema-osc);
+    background:#fff;
+    backdrop-filter:blur(10px);
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
   }
   .detalle-header button{
-    background:none;border:none;font-size:22px;cursor:pointer;color:var(--marron);
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    background:var(--verde);
+    border:1px solid transparent;
+    border-radius:999px;
+    padding:10px 14px;
+    font-size:0.95rem;
+    font-weight:700;
+    color:#fff;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:background .2s,transform .2s;
+    box-shadow:0 4px 14px rgba(0,0,0,0.12);
   }
-  .detalle-header h3{color:var(--marron);}
+  .detalle-header button:hover{
+    background:var(--verde-osc);
+    transform:translateY(-50%) scale(1.02);
+  }
+  .detalle-header h3{color:var(--marron);margin:0;font-size:1.9rem;}
+  @media(max-width:540px){
+    .detalle-header{
+      padding:14px 16px;
+      gap:12px;
+    }
+    .detalle-header button{
+      padding:8px 12px;
+      font-size:0.9rem;
+      left:10px;
+    }
+    .detalle-header h3{
+      font-size:1.8rem;
+      text-align:center;
+      margin:0;
+      width:100%;
+      padding:0 48px;
+    }
+  }
 
   .carrusel{
     position:relative;max-width:500px;margin:24px auto 0;padding:0 20px;
@@ -233,13 +330,13 @@
   .detalle-info{
     max-width:500px;margin:26px auto;padding:0 20px;text-align:left;
   }
-  .detalle-info h2{color:var(--marron);margin-bottom:8px;}
-  .detalle-info .precio{font-size:22px;color:var(--verde-osc);font-weight:bold;margin-bottom:14px;}
-  .detalle-info .descripcion{color:#5a4d3a;line-height:1.6;margin-bottom:24px;}
+  .detalle-info h2{color:var(--marron);margin-bottom:8px;font-size:1.4rem;}
+  .detalle-info .precio{font-size:1.25rem;color:var(--verde-osc);font-weight:bold;margin-bottom:14px;}
+  .detalle-info .descripcion{font-size:var(--font-medium);color:#5a4d3a;line-height:1.6;margin-bottom:24px;}
   .btn-whatsapp{
     display:flex;align-items:center;justify-content:center;gap:10px;
     background:#25D366;color:#fff;padding:15px;border-radius:8px;
-    font-weight:bold;font-size:16px;border:none;cursor:pointer;width:100%;
+    font-weight:bold;font-size:var(--font-medium);border:none;cursor:pointer;width:100%;
   }
 
   /* ===== FOOTER ===== */
@@ -317,8 +414,8 @@
 <section class="hero" id="inicio">
   <div class="hero-text">
     <h1>Artesanía que cuenta historias</h1>
-    <p>Piezas hechas a mano con paja toquilla, elaboradas por manos expertas peruanas. Cada producto lleva una historia de tradición y cuidado.</p>
-    <a href="#productos" class="btn-primary">Explora productos</a>
+    <p>Piezas hechas a mano con paja toquilla, elaboradas por manos expertas peruanas. Cada producto lleva una historia de tradición y cuidado, pasando por las manos de artesanos peruanos antes de llegar a las tuyas</p>
+    <a href="#productos" class="btn-primary">Explora nuestros productos</a>
   </div>
   <div class="hero-img">
     <img src="imagenes/LOGO2.png" alt="Artesanía MAJUS">
@@ -359,6 +456,7 @@
   <div class="productos-grid" id="productosGrid">
     <!-- Se llenan por JS -->
   </div>
+  <div class="pagination" id="productosPagination"></div>
 </section>
 
 <!-- ===== PRODUCTOS DESTACADOS ===== -->
@@ -367,6 +465,7 @@
   <div class="productos-grid" id="destacadosGrid">
     <!-- Se llenan por JS -->
   </div>
+  <div class="pagination" id="destacadosPagination"></div>
 </section>
 
 <!-- ===== NOSOTROS ===== -->
@@ -403,7 +502,7 @@
 <!-- ===== DETALLE DE PRODUCTO (overlay) ===== -->
 <div class="detalle-overlay" id="detalleOverlay">
   <div class="detalle-header">
-    <button onclick="cerrarDetalle()">←</button>
+    <button onclick="cerrarDetalle()" aria-label="Volver">← Volver</button>
     <h3>MAJUS</h3>
   </div>
 
@@ -419,7 +518,7 @@
     <div class="precio" id="detallePrecio"></div>
     <p class="descripcion" id="detalleDescripcion"></p>
     <button class="btn-whatsapp" onclick="irAWhatsapp()">
-      Lo quiero — Comprar por WhatsApp
+      Lo quiero - Comprar por WhatsApp
     </button>
   </div>
 </div>
@@ -491,10 +590,11 @@ const productos = [
     precio: "S/ 90",
     descripcion: "Cartera artesanal tejida a mano en fibra natural, disponible en tono natural o en colores como el marrón. <br> Ideal para llevar tus accesorios del día a día con estilo. <br> Perfecta para quienes buscan combinar comodidad, tradición y un toque de moda sostenible en cada salida.",
     imagenes: [
+      "imagenes/cartera_medialuna (4).jpg",
       "imagenes/cartera_medialuna.jpg",
       "imagenes/cartera_medialuna (2).jpg",
       "imagenes/cartera_medialuna (3).jpg",
-      "imagenes/cartera_medialuna (4).jpg",
+      
     ]
   },
   {
@@ -516,6 +616,7 @@ const productos = [
     id: 4,
     nombre: "Flores (tejidas)",
     categoria: "decoracion",
+    destacado: true,
     precio: "S/ ",
     descripcion: "Flores artesanales tejidas a mano, muy utilizadas en florerías, cestas decorativas y arreglos para el hogar. <br> Perfectas para dar la bienvenida, decorar mesas y mostradores, o simplemente embellecer cualquier espacio.<br> Un detalle natural y duradero que nunca pasa de moda. ",
     imagenes: [
@@ -527,6 +628,20 @@ const productos = [
   },
   {
     id: 5,
+    nombre: "Cartera con flor roja",
+    categoria: "bolsos",
+    destacado: true,
+    precio: "S/ ",
+    descripcion: "Cartera artesanal tejida a mano en fibra natural, adornada con una delicada flor tejida en tonos rojo, amarillo y verde que le da un toque femenino y colorido.<br> Cuenta con doble asa circular tejida, cómoda y resistente. <br>Ideal para quienes buscan un accesorio único, tierno y lleno de tradición, perfecto para regalar o para lucir en ocasiones especiales. ",
+    imagenes: [
+      "imagenes/cartera_con_flor_roja.jpeg",
+      "imagenes/cartera_con_flor_roja (2).jpeg",
+      "imagenes/cartera_con_flor_roja (3).jpeg",
+      "imagenes/cartera_con_flor_roja (4).jpeg",
+    ]
+  },
+  {
+    id: 6,
     nombre: "Porta cubiertos",
     categoria: "decoracion",
     precio: "S/ ",
@@ -537,7 +652,7 @@ const productos = [
     ]
   },
   {
-    id: 6,
+    id: 7,
     nombre: "Miniaturas de sombreros y canastas",
     categoria: "decoracion",
     destacado: true,
@@ -552,7 +667,7 @@ const productos = [
     ]
   },
   {
-    id: 7,
+    id: 8,
     nombre: "Panera redonda tupida con diseño",
     categoria: "decoracion",
     precio: "S/ ",
@@ -565,7 +680,21 @@ const productos = [
     ]
   },
   {
-    id: 8,
+    id: 9,
+    nombre: "Cartera tupida con detalle calado",
+    categoria: "bolsos",
+    destacado:true,
+    precio: "S/ ",
+    descripcion: "Cartera tejida a mano en fibra natural, con un detalle calado central resaltado por una línea en tono oscuro y doble asa circular tejida. <br> Su diseño combina tradición y elegancia en una pieza compacta, ideal para llevar tus accesorios esenciales con estilo. <br>Perfecta para quienes buscan un accesorio artesanal versátil, útil tanto para el día a día como para una salida especial.",
+    imagenes: [
+      "imagenes/Cartera_tupida con_detalle_calado.jpeg",
+      "imagenes/Cartera_tupida con_detalle_calado (2).jpeg",
+      "imagenes/Cartera_tupida con_detalle_calado (3).jpeg",
+      "imagenes/Cartera_tupida con_detalle_calado (4).jpeg",
+    ]
+  },
+  {
+    id: 10,
     nombre: "Panera ovalada calada",
     categoria: "decoracion",
     precio: "S/ ",
@@ -577,6 +706,140 @@ const productos = [
       "imagenes/panera_ovalada_calada (4).png",
       "imagenes/panera_ovalada_calada (5).png",
     ]
+  },
+  {
+    id: 11,
+    nombre: "Rosas (tejidas)",
+    categoria: "decoracion",
+    destacado: true,
+    precio: "S/ ",
+    descripcion: "Rosas artesanales tejidas a mano, ideales para embellecer los espacios del hogar o como regalo especial para esas fechas importantes.<br> Perfectas para sorprender a la pareja, amigos o familiares con un detalle único, natural y duradero, que no se marchita.",
+    imagenes: [
+      "imagenes/rosas (3).png",
+      "imagenes/rosas.png",
+      "imagenes/rosas (2).png",
+      "imagenes/rosas (4).png",
+      "imagenes/rosas (5).png"
+    ]
+  },
+  {
+    id: 12,
+    nombre: "Cofre circular",
+    categoria: "decoracion",
+    precio: "S/ ",
+    descripcion: "Cofre circular artesanal tejido a mano, ideal para guardar joyas, accesorios u objetos personales con estilo. <br> Combina funcionalidad y decoración en un solo producto, perfecto para el hogar o como regalo con un toque natural y tradicional.",
+    imagenes: [
+      "imagenes/cofrecircular.jpeg",
+      "imagenes/cofrecircular (2).jpeg",
+      "imagenes/cofrecircular (3).jpeg",
+    ]
+  },
+  {
+    id: 13,
+    nombre: "Cartera cuadrada tupida",
+    categoria: "bolsos",
+    destacado: true,
+    precio: "S/ ",
+    descripcion: "Cartera de forma cuadrada con tejido tupido, resistente y con un acabado prolijo.<br> Ideal para el uso diario gracias a su durabilidad y estilo natural. <br>Una pieza que combina funcionalidad con la esencia artesanal de nuestras tejedoras",
+    imagenes: [
+      "imagenes/cartera_cuadrada_tupida.jpeg",
+      "imagenes/cartera_cuadrada_tupida (2).jpeg",
+      "imagenes/cartera_cuadrada_tupida (3).jpeg",
+      "imagenes/cartera_cuadrada_tupida (4).jpeg",
+    ]
+  },
+  {
+    id: 14,
+    nombre: "Cartera rectangular tupida",
+    categoria: "bolsos",
+    destacado: true,
+    precio: "S/ ",
+    descripcion: "Cartera rectangular de tejido tupido, con un diseño práctico y elegante para llevar tus pertenencias. <br>Resistente y cómoda, ideal para el día a día. <br>Perfecta para quienes buscan un accesorio funcional sin dejar de lado la tradición artesanal.",
+    imagenes: [
+      "imagenes/cartera_rectangular_tupida (4).jpeg",
+      "imagenes/cartera_rectangular_tupida.jpeg",
+      "imagenes/cartera_rectangular_tupida (2).jpeg",
+      "imagenes/cartera_rectangular_tupida (3).jpeg",
+      
+    ]
+  },
+  {
+    id: 15,
+    nombre: "Porta utensilios",
+    categoria: "decoracion",
+    precio: "S/ ",
+    descripcion: "Porta utensilios artesanal tejido a mano, ideal para organizar objetos pequeños de forma práctica y decorativa.<br> Perfecto para la cocina, el escritorio o cualquier rincón del hogar donde quieras mantener el orden con un toque natural. <br>Combina funcionalidad y estilo artesanal en un solo producto.",
+    imagenes: [
+      "imagenes/porta_utensilios (2).jpeg",
+      "imagenes/porta_utensilios.jpeg",
+      "imagenes/porta_utensilios (3).jpeg",
+      "imagenes/porta_utensilios (4).jpeg",
+    ]
+  },
+  {
+    id: 16,
+    nombre: "Panera ovalada calada con diseño",
+    categoria: "decoracion",
+    precio: "S/ ",
+    descripcion: "Panera ovalada de tejido calado con diseño decorativo especial, ideal para guardar pan, frutas o verduras mientras suma un detalle visual único a tu mesa. <br>Perfecta para el hogar o negocios que buscan diferenciarse con piezas artesanales.",
+    imagenes: [
+      "imagenes/panera_ovalada_calada_diseño (2).jpeg",
+      "imagenes/panera_ovalada_calada_diseño.jpeg",
+      "imagenes/panera_ovalada_calada_diseño (3).jpeg",
+      "imagenes/panera_ovalada_calada_diseño (4).jpeg",
+    ]
+  },
+  {
+    id: 17,
+    nombre: "Panera ovalada calada",
+    categoria: "decoracion",
+    precio: "S/ ",
+    descripcion: "Panera ovalada de tejido calado, perfecta para guardar pan, frutas y verduras mientras aporta un toque decorativo natural a tu mesa. <br> Su diseño abierto le da un aire ligero y artesanal, ideal para el hogar o negocios gastronómicos.",
+    imagenes: [
+      "imagenes/panera_ovalada_calada2 (3).jpeg",
+      "imagenes/panera_ovalada_calada2.jpeg",
+      "imagenes/panera_ovalada_calada2 (2).jpeg",
+      "imagenes/panera_ovalada_calada2 (4).jpeg",
+    ]
+  },
+  {
+    id: 18,
+    nombre: "Panera redonda calada de colores",
+    categoria: "decoracion",
+    precio: "S/ ",
+    descripcion: "Panera redonda de tejido calado disponible en distintos colores, ideal para guardar pan, frutas o verduras con un toque de color y frescura.<br> Perfecta para darle vida a la mesa del hogar o de tu negocio..",
+    imagenes: [
+      "imagenes/panera_redonda_calada_colores.jpeg",
+      "imagenes/panera_redonda_calada_colores (2).jpeg",
+      "imagenes/panera_redonda_calada_colores (3).jpeg",
+      "imagenes/panera_redonda_calada_colores (4).jpeg",
+    ]
+  },
+  {
+    id: 19,
+    nombre: "Panera ovalada calada",
+    categoria: "decoracion",
+    precio: "S/ ",
+    descripcion: "Panera ovalada de tejido calado, perfecta para guardar pan, frutas y verduras mientras aporta un toque decorativo natural a tu mesa. <br> Su diseño abierto le da un aire ligero y artesanal, ideal para el hogar o negocios gastronómicos.",
+    imagenes: [
+      "imagenes/panera_ovalada_calada3 (3).jpeg",
+      "imagenes/panera_ovalada_calada3.jpeg",
+      "imagenes/panera_ovalada_calada3 (2).jpeg",
+      "imagenes/panera_ovalada_calada3 (4).jpeg",
+    ]
+  },
+  {
+    id: 20,
+    nombre: "Panera circular con diseño",
+    categoria: "decoracion",
+    precio: "S/ ",
+    descripcion: "Panera circular con diseño decorativo tejido a mano, ideal para guardar pan, frutas o verduras.<br> Combina funcionalidad y estética, siendo una excelente opción tanto para el hogar como para restaurantes y cafeterías que buscan un detalle artesanal en su mesa. ",
+    imagenes: [
+      "imagenes/panera_cicurlar_con_diseño (2).jpeg",
+      "imagenes/panera_cicurlar_con_diseño (3).jpeg",
+      "imagenes/panera_cicurlar_con_diseño.jpeg",
+      "imagenes/panera_cicurlar_con_diseño (4).jpeg",
+    ]
   }
 ];
 
@@ -585,18 +848,37 @@ const numeroWhatsapp = "51924604802"; // <-- Cambia por tu número real (con có
 /* ===================== RENDER PRODUCTOS ===================== */
 const grid = document.getElementById('productosGrid');
 const destacadosGrid = document.getElementById('destacadosGrid');
+const productosPagination = document.getElementById('productosPagination');
+const destacadosPagination = document.getElementById('destacadosPagination');
 const filtrosBotones = document.querySelectorAll('.btn-filtro');
 const buscadorProductos = document.getElementById('buscadorProductos');
+const ITEMS_PER_PAGE = 12;
+const DESTACADOS_PER_PAGE = 8;
 let categoriaActiva = 'todos';
 let terminoBusqueda = '';
+let paginaActual = 1;
+let paginaDestacadosActual = 1;
 
-function renderProductos(items, container){
-  container.innerHTML = '';
-  if(!items.length){
-    container.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#5a4d3a;padding:24px;border-radius:12px;background:rgba(255,255,255,0.6);">No se encontraron productos.</div>';
-    return;
+function renderProductos(items, container, currentPage = 1, pageSize = ITEMS_PER_PAGE, paginationContainer = null, onPageChange = null){
+  container.classList.add('fade-grid');
+  if (paginationContainer) {
+    paginationContainer.style.pointerEvents = 'none';
   }
-  items.forEach(p => {
+
+  setTimeout(() => {
+    container.innerHTML = '';
+    if(!items.length){
+      container.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#5a4d3a;padding:24px;border-radius:12px;background:rgba(255,255,255,0.6);">No se encontraron productos.</div>';
+      if (paginationContainer) paginationContainer.innerHTML = '';
+      container.classList.remove('fade-grid');
+      if (paginationContainer) paginationContainer.style.pointerEvents = 'auto';
+      return;
+    }
+
+    const start = (currentPage - 1) * pageSize;
+    const pageItems = items.slice(start, start + pageSize);
+
+    pageItems.forEach(p => {
     const card = document.createElement('div');
     card.className = 'prod-card';
     card.dataset.categoria = p.categoria;
@@ -610,9 +892,77 @@ function renderProductos(items, container){
     card.addEventListener('click', () => abrirDetalle(p.id));
     container.appendChild(card);
   });
+
+  if (paginationContainer && typeof onPageChange === 'function') {
+    renderPagination(items.length, currentPage, pageSize, paginationContainer, onPageChange);
+  }
+
+  const sectionId = container.id === 'productosGrid' ? 'todos' : container.id === 'destacadosGrid' ? 'productos' : null;
+  if (sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const isMostlyVisible = rect.top >= 0 && rect.bottom <= viewportHeight;
+      if (!isMostlyVisible) {
+        section.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    }
+  }
+
+  container.classList.remove('fade-grid');
+  if (paginationContainer) {
+    paginationContainer.style.pointerEvents = 'auto';
+  }
+}, 100);
+}
+
+function renderPagination(totalItems, currentPage, pageSize, container, onPageChange){
+  const totalPages = Math.ceil(totalItems / pageSize);
+  container.innerHTML = '';
+  if (totalPages <= 1) return;
+
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'pagination-btn';
+  prevBtn.textContent = '←';
+  prevBtn.disabled = currentPage === 1;
+  prevBtn.addEventListener('click', () => onPageChange(currentPage - 1));
+  container.appendChild(prevBtn);
+
+  const pagesToShow = [];
+  for (let i = 1; i <= totalPages; i++) {
+    if (totalPages <= 5 || i === 1 || i === totalPages || Math.abs(i - currentPage) <= 1) {
+      pagesToShow.push(i);
+    } else if (pagesToShow[pagesToShow.length - 1] !== '...') {
+      pagesToShow.push('...');
+    }
+  }
+
+  pagesToShow.forEach(page => {
+    if (page === '...') {
+      const span = document.createElement('span');
+      span.className = 'pagination-ellipsis';
+      span.textContent = '...';
+      container.appendChild(span);
+      return;
+    }
+    const pageBtn = document.createElement('button');
+    pageBtn.className = 'pagination-btn' + (page === currentPage ? ' active' : '');
+    pageBtn.textContent = page;
+    pageBtn.addEventListener('click', () => onPageChange(page));
+    container.appendChild(pageBtn);
+  });
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'pagination-btn';
+  nextBtn.textContent = '→';
+  nextBtn.disabled = currentPage === totalPages;
+  nextBtn.addEventListener('click', () => onPageChange(currentPage + 1));
+  container.appendChild(nextBtn);
 }
 
 function aplicarFiltro(){
+  paginaActual = 1;
   const term = terminoBusqueda.trim().toLowerCase();
   const productosFiltrados = productos.filter(p => {
     const coincideCategoria = categoriaActiva === 'todos' || p.categoria === categoriaActiva;
@@ -620,12 +970,24 @@ function aplicarFiltro(){
     const coincideBusqueda = !term || texto.includes(term);
     return coincideCategoria && coincideBusqueda;
   });
-  renderProductos(productosFiltrados, grid);
+
+  const actualizarProductos = (page) => {
+    paginaActual = page;
+    renderProductos(productosFiltrados, grid, paginaActual, ITEMS_PER_PAGE, productosPagination, actualizarProductos);
+  };
+
+  actualizarProductos(paginaActual);
 }
 
 function renderDestacados(){
   const destacados = productos.filter(p => p.destacado);
-  renderProductos(destacados, destacadosGrid);
+
+  const actualizarDestacados = (page) => {
+    paginaDestacadosActual = page;
+    renderProductos(destacados, destacadosGrid, paginaDestacadosActual, DESTACADOS_PER_PAGE, destacadosPagination, actualizarDestacados);
+  };
+
+  actualizarDestacados(paginaDestacadosActual);
 }
 
 filtrosBotones.forEach(btn => {
@@ -642,7 +1004,7 @@ buscadorProductos.addEventListener('input', (e) => {
   aplicarFiltro();
 });
 
-renderProductos(productos, grid);
+aplicarFiltro();
 renderDestacados();
 
 function scrollToCategoria(cat){
@@ -670,9 +1032,24 @@ mobileNav.querySelectorAll('a').forEach(a=>{
 let productoActual = null;
 let indiceImagen = 0;
 
+function resetDetalleOverlay(){
+  productoActual = null;
+  indiceImagen = 0;
+  document.getElementById('detalleNombre').textContent = '';
+  document.getElementById('detallePrecio').textContent = '';
+  document.getElementById('detalleDescripcion').innerHTML = '';
+  document.getElementById('carruselTrack').innerHTML = '';
+  document.getElementById('dotsContainer').innerHTML = '';
+}
+
 function abrirDetalle(id){
+  resetDetalleOverlay();
   productoActual = productos.find(p => p.id === id);
   indiceImagen = 0;
+
+  if (!history.state || !history.state.detalleOpen) {
+    history.pushState({detalleOpen: true}, '', window.location.pathname + '#detalle');
+  }
 
   document.getElementById('detalleNombre').textContent = productoActual.nombre;
   document.getElementById('detallePrecio').textContent = productoActual.precio;
@@ -696,7 +1073,6 @@ function abrirDetalle(id){
   }
 
   const track = document.getElementById('carruselTrack');
-  track.innerHTML = '';
   productoActual.imagenes.forEach((src, i) => {
     const img = document.createElement('img');
     img.src = src;
@@ -705,7 +1081,10 @@ function abrirDetalle(id){
   });
 
   renderDots();
-  document.getElementById('detalleOverlay').classList.add('open');
+  const detalleOverlay = document.getElementById('detalleOverlay');
+  detalleOverlay.classList.add('open');
+  detalleOverlay.scrollTop = 0;
+  window.scrollTo(0, 0);
   document.body.style.overflow = 'hidden';
 
   // Soporte de swipe (deslizar en móvil)
@@ -718,10 +1097,22 @@ function abrirDetalle(id){
   };
 }
 
-function cerrarDetalle(){
+function cerrarDetalle(options = {}){
+  const { fromPopState = false } = options;
   document.getElementById('detalleOverlay').classList.remove('open');
   document.body.style.overflow = 'auto';
+  resetDetalleOverlay();
+  if (!fromPopState && history.state && history.state.detalleOpen) {
+    history.back();
+  }
 }
+
+window.addEventListener('popstate', () => {
+  const overlay = document.getElementById('detalleOverlay');
+  if (overlay.classList.contains('open')) {
+    cerrarDetalle({ fromPopState: true });
+  }
+});
 
 function renderDots(){
   const dotsContainer = document.getElementById('dotsContainer');
