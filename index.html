@@ -557,8 +557,8 @@
 
   <div class="detalle-info">
     <h2 id="detalleNombre"></h2>
-    <div class="precio" id="detallePrecio"></div>
     <p class="descripcion" id="detalleDescripcion"></p>
+    <div class="precio" id="detallePrecio"></div>
     <button class="btn-whatsapp" onclick="irAWhatsapp()">
       Lo quiero - Comprar por WhatsApp
     </button>
@@ -1131,13 +1131,6 @@ function abrirDetalle(id, options = {}){
   }
 
   document.getElementById('detalleNombre').textContent = productoActual.nombre;
-  const precioElem = document.getElementById('detallePrecio');
-  const precioRaw = (productoActual.precio || '').toString().trim();
-  if (/consultar/i.test(precioRaw) || precioRaw === '') {
-    precioElem.textContent = 'Escríbenos y te damos el precio de esta pieza única';
-  } else {
-    precioElem.textContent = precioRaw;
-  }
   // Preparar descripción: decodificar entidades y permitir HTML (<br>, <p>, <a>)
   const descripcionRaw = productoActual.descripcion || '';
   function decodeHtmlEntities(str){
@@ -1155,6 +1148,15 @@ function abrirDetalle(id, options = {}){
       .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`)
       .join('');
     document.getElementById('detalleDescripcion').innerHTML = descripcionHtml;
+  }
+
+  // Ahora mostrar el precio / mensaje de contacto (después de la descripción)
+  const precioElem = document.getElementById('detallePrecio');
+  const precioRaw = (productoActual.precio || '').toString().trim();
+  if (/consultar/i.test(precioRaw) || precioRaw === '') {
+    precioElem.textContent = 'Escríbenos y te damos el precio de esta pieza';
+  } else {
+    precioElem.textContent = precioRaw;
   }
 
   const track = document.getElementById('carruselTrack');
