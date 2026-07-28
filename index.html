@@ -197,6 +197,48 @@
   .prod-info h4{font-size:calc(var(--font-medium) - 1px);color:var(--marron);margin-bottom:6px;}
   .prod-info p{font-size:var(--font-small);font-weight:bold;color:var(--verde-osc);}
 
+  /* Precio como "píldora" (mini-botón) */
+  .precio-pill{
+    display:inline-block;
+    padding:6px 10px;
+    border-radius:999px;
+    background:transparent;
+    border:1px solid var(--crema-osc);
+    color:var(--verde-osc);
+    font-weight:700;
+    font-size:0.95rem;
+    cursor:pointer;
+    transition:background .18s,color .18s,transform .12s;
+  }
+  .precio-pill:hover,
+  .precio-pill:focus{
+    background:var(--verde);
+    color:#fff;
+    outline:none;
+    transform:translateY(-1px);
+  }
+  .precio-pill:focus{box-shadow:0 0 0 3px rgba(92,124,74,0.12);}
+  .precio-pill:active,
+  .precio-pill.pressed{
+    background:var(--verde);
+    color:#fff;
+    transform:translateY(-2px) scale(0.985);
+    box-shadow:0 10px 22px rgba(65,89,47,0.18);
+  }
+  .precio-pill{
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+    transition:background .12s,color .12s,transform .08s,box-shadow .12s;
+  }
+  /* Animación breve de cambio de color al tocar (visible en móvil) */
+  .precio-pill.active-anim{
+    animation: pillFlash .22s ease-out forwards;
+  }
+  @keyframes pillFlash{
+    0%{background:var(--verde); color:#fff; transform:translateY(0) scale(1);} 
+    50%{background:var(--verde-osc); color:#fff; transform:translateY(-3px) scale(0.975);} 
+    100%{background:var(--verde); color:#fff; transform:translateY(-2px) scale(0.985);} 
+  }
   /* ===== NOSOTROS ===== */
   .nosotros{
     display:flex;gap:40px;flex-wrap:wrap;align-items:center;
@@ -414,7 +456,7 @@
 <section class="hero" id="inicio">
   <div class="hero-text">
     <h1>Artesanía que cuenta historias</h1>
-    <p>Piezas hechas a mano con paja toquilla, elaboradas por manos expertas peruanas. Cada producto lleva una historia de tradición y cuidado, pasando por las manos de artesanos peruanos antes de llegar a las tuyas</p>
+    <p>Piezas hechas a mano con paja toquilla, elaboradas por manos expertas.<br> Cada producto lleva una historia de tradición y cuidado, pasando por las manos de artesanos cataquenses antes de llegar a las tuyas <br> Catacaos-Piura</p>
     <a href="#productos" class="btn-primary">Explora nuestros productos</a>
   </div>
   <div class="hero-img">
@@ -573,7 +615,7 @@ const productos = [
     id: 1,
     nombre: "Sombrero Tradicional",
     categoria: "sombreros",
-    precio: "S/ 450",
+    precio: "Consultar precio",
     destacado: true,
     descripcion: "Sombrero artesanal cargado de tradición e historia, elaborado 100% a mano con fibras naturales. <br> Protege del sol y a la vez se luce como un símbolo de identidad y elegancia. <br> Ideal para damas, caballeros, turistas y locales que buscan un accesorio con estilo propio.",
     imagenes: [
@@ -587,7 +629,7 @@ const productos = [
     id: 2,
     nombre: "Cartera media luna",
     categoria: "bolsos",
-    precio: "S/ 90",
+    precio: "Consultar precio",
     descripcion: "Cartera artesanal tejida a mano en fibra natural, disponible en tono natural o en colores como el marrón. <br> Ideal para llevar tus accesorios del día a día con estilo. <br> Perfecta para quienes buscan combinar comodidad, tradición y un toque de moda sostenible en cada salida.",
     imagenes: [
       "imagenes/cartera_medialuna (4).jpg",
@@ -602,7 +644,7 @@ const productos = [
     nombre: "Cartera cuadrada calada",
     categoria: "bolsos",
     destacado: true,
-    precio: "S/ 95",
+    precio: "Consultar precio",
     descripcion: "Cartera de diseño calado, tejida artesanalmente en color natural o en tonos variados. <br> Pensada para quienes disfrutan de la comodidad sin dejar de lucir un estilo moderno. <br> Un accesorio que combina tradición, cultura y moda sostenible en una sola pieza.",
     imagenes: [
       "imagenes/cartera_cuadrada_calada.jpg",
@@ -617,7 +659,7 @@ const productos = [
     nombre: "Flores (tejidas)",
     categoria: "decoracion",
     destacado: true,
-    precio: "S/ ",
+    precio: "Consultar precio",
     descripcion: "Flores artesanales tejidas a mano, muy utilizadas en florerías, cestas decorativas y arreglos para el hogar. <br> Perfectas para dar la bienvenida, decorar mesas y mostradores, o simplemente embellecer cualquier espacio.<br> Un detalle natural y duradero que nunca pasa de moda. ",
     imagenes: [
       "imagenes/flores.png",
@@ -630,7 +672,7 @@ const productos = [
     nombre: "Cartera con flor roja",
     categoria: "bolsos",
     destacado: true,
-    precio: "S/ ",
+    precio: "Consultar precio ",
     descripcion: "Cartera artesanal tejida a mano en fibra natural, adornada con una delicada flor tejida en tonos rojo, amarillo y verde que le da un toque femenino y colorido.<br> Cuenta con doble asa circular tejida, cómoda y resistente. <br>Ideal para quienes buscan un accesorio único, tierno y lleno de tradición, perfecto para regalar o para lucir en ocasiones especiales. ",
     imagenes: [
       "imagenes/cartera_con_flor_roja.jpeg",
@@ -643,7 +685,7 @@ const productos = [
     id: 6,
     nombre: "Porta cubiertos",
     categoria: "decoracion",
-    precio: "S/ ",
+    precio: "Consultar precio",
     descripcion: "Porta cubiertos artesanal que mantiene los cubiertos ordenados y siempre al alcance de los comensales. <br>Ideal para mesas de restaurantes rústicos, campestres y espacios con estilo natural. <br> Suma un toque cálido y auténtico a cualquier mesa. ",
     imagenes: [
       "imagenes/porta_cubiertos.png",
@@ -655,7 +697,7 @@ const productos = [
     nombre: "Miniaturas de sombreros y canastas",
     categoria: "decoracion",
     destacado: true,
-    precio: "S/ ",
+    precio: "Consultar precio",
     descripcion: "Réplicas en miniatura de nuestros sombreros y canastas, perfectas como piezas de decoración, colección o incluso como llaveros. <br>Ideales para el uso cotidiano o como detalle de recuerdo.<br> Un pedacito de nuestra tradición artesanal en formato pequeño y coleccionable. ",
     imagenes: [
       "imagenes/miniaturas_sombreros_canastas.png",
@@ -669,7 +711,7 @@ const productos = [
     id: 8,
     nombre: "Panera redonda tupida con diseño",
     categoria: "decoracion",
-    precio: "S/ ",
+    precio: "Consultar precio",
     descripcion: "Panera redonda de tejido tupido con diseño decorativo, ideal para guardar pan, frutas o verduras.<br> Funciona también como pieza decorativa en eventos especiales, restaurantes, picanterías y cafeterías.<br> Combina funcionalidad y estética artesanal en un solo producto",
     imagenes: [
       "imagenes/panera_redonda_tupida.png",
@@ -683,7 +725,7 @@ const productos = [
     nombre: "Cartera tupida con detalle calado",
     categoria: "bolsos",
     destacado:true,
-    precio: "S/ ",
+    precio: "Consultar precio",
     descripcion: "Cartera tejida a mano en fibra natural, con un detalle calado central resaltado por una línea en tono oscuro y doble asa circular tejida. <br> Su diseño combina tradición y elegancia en una pieza compacta, ideal para llevar tus accesorios esenciales con estilo. <br>Perfecta para quienes buscan un accesorio artesanal versátil, útil tanto para el día a día como para una salida especial.",
     imagenes: [
       "imagenes/Cartera_tupida con_detalle_calado.jpeg",
@@ -696,7 +738,7 @@ const productos = [
     id: 10,
     nombre: "Panera ovalada calada",
     categoria: "decoracion",
-    precio: "S/ ",
+    precio: "Consultar precio",
     descripcion: "Panera ovalada de tejido calado, perfecta para guardar pan, frutas y verduras mientras aporta un toque decorativo natural a tu mesa. <br> Su diseño abierto le da un aire ligero y artesanal, ideal para el hogar o negocios gastronómicos.",
     imagenes: [
       "imagenes/panera_ovalada_calada.png",
@@ -711,7 +753,7 @@ const productos = [
     nombre: "Rosas (tejidas)",
     categoria: "decoracion",
     destacado: true,
-    precio: "S/ ",
+    precio: "Consultar precio",
     descripcion: "Rosas artesanales tejidas a mano, ideales para embellecer los espacios del hogar o como regalo especial para esas fechas importantes.<br> Perfectas para sorprender a la pareja, amigos o familiares con un detalle único, natural y duradero, que no se marchita.",
     imagenes: [
       "imagenes/rosas (3).png",
@@ -723,7 +765,7 @@ const productos = [
     id: 12,
     nombre: "Cofre circular",
     categoria: "decoracion",
-    precio: "S/ ",
+    precio: "Consultar precio",
     descripcion: "Cofre circular artesanal tejido a mano, ideal para guardar joyas, accesorios u objetos personales con estilo. <br> Combina funcionalidad y decoración en un solo producto, perfecto para el hogar o como regalo con un toque natural y tradicional.",
     imagenes: [
       "imagenes/cofrecircular.jpeg",
@@ -736,7 +778,7 @@ const productos = [
     nombre: "Cartera cuadrada tupida",
     categoria: "bolsos",
     destacado: true,
-    precio: "S/ ",
+    precio: "Consultar precio",
     descripcion: "Cartera de forma cuadrada con tejido tupido, resistente y con un acabado prolijo.<br> Ideal para el uso diario gracias a su durabilidad y estilo natural. <br>Una pieza que combina funcionalidad con la esencia artesanal de nuestras tejedoras",
     imagenes: [
       "imagenes/cartera_cuadrada_tupida.jpeg",
@@ -750,7 +792,7 @@ const productos = [
     nombre: "Cartera rectangular tupida",
     categoria: "bolsos",
     destacado: true,
-    precio: "S/ ",
+    precio: "Consultar precio",
     descripcion: "Cartera rectangular de tejido tupido, con un diseño práctico y elegante para llevar tus pertenencias. <br>Resistente y cómoda, ideal para el día a día. <br>Perfecta para quienes buscan un accesorio funcional sin dejar de lado la tradición artesanal.",
     imagenes: [
       "imagenes/cartera_rectangular_tupida (4).jpeg",
@@ -764,7 +806,7 @@ const productos = [
     id: 15,
     nombre: "Porta utensilios",
     categoria: "decoracion",
-    precio: "S/ ",
+    precio: "Consultar precio",
     descripcion: "Porta utensilios artesanal tejido a mano, ideal para organizar objetos pequeños de forma práctica y decorativa.<br> Perfecto para la cocina, el escritorio o cualquier rincón del hogar donde quieras mantener el orden con un toque natural. <br>Combina funcionalidad y estilo artesanal en un solo producto.",
     imagenes: [
       "imagenes/porta_utensilios (2).jpeg",
@@ -777,7 +819,7 @@ const productos = [
     id: 16,
     nombre: "Panera ovalada calada con diseño",
     categoria: "decoracion",
-    precio: "S/ ",
+    precio: "Consultar precio",
     descripcion: "Panera ovalada de tejido calado con diseño decorativo especial, ideal para guardar pan, frutas o verduras mientras suma un detalle visual único a tu mesa. <br>Perfecta para el hogar o negocios que buscan diferenciarse con piezas artesanales.",
     imagenes: [
       "imagenes/panera_ovalada_calada_diseño (2).jpeg",
@@ -790,7 +832,7 @@ const productos = [
     id: 17,
     nombre: "Panera ovalada calada",
     categoria: "decoracion",
-    precio: "S/ ",
+    precio: "Consultar precio",
     descripcion: "Panera ovalada de tejido calado, perfecta para guardar pan, frutas y verduras mientras aporta un toque decorativo natural a tu mesa. <br> Su diseño abierto le da un aire ligero y artesanal, ideal para el hogar o negocios gastronómicos.",
     imagenes: [
       "imagenes/panera_ovalada_calada2 (3).jpeg",
@@ -803,7 +845,7 @@ const productos = [
     id: 18,
     nombre: "Panera redonda calada de colores",
     categoria: "decoracion",
-    precio: "S/ ",
+    precio: "Consultar precio",
     descripcion: "Panera redonda de tejido calado disponible en distintos colores, ideal para guardar pan, frutas o verduras con un toque de color y frescura.<br> Perfecta para darle vida a la mesa del hogar o de tu negocio..",
     imagenes: [
       "imagenes/panera_redonda_calada_colores.jpeg",
@@ -816,7 +858,7 @@ const productos = [
     id: 19,
     nombre: "Panera ovalada calada",
     categoria: "decoracion",
-    precio: "S/ ",
+    precio: "Consultar precio",
     descripcion: "Panera ovalada de tejido calado, perfecta para guardar pan, frutas y verduras mientras aporta un toque decorativo natural a tu mesa. <br> Su diseño abierto le da un aire ligero y artesanal, ideal para el hogar o negocios gastronómicos.",
     imagenes: [
       "imagenes/panera_ovalada_calada3 (3).jpeg",
@@ -829,7 +871,7 @@ const productos = [
     id: 20,
     nombre: "Panera circular con diseño",
     categoria: "decoracion",
-    precio: "S/ ",
+    precio: "Consultar precio",
     descripcion: "Panera circular con diseño decorativo tejido a mano, ideal para guardar pan, frutas o verduras.<br> Combina funcionalidad y estética, siendo una excelente opción tanto para el hogar como para restaurantes y cafeterías que buscan un detalle artesanal en su mesa. ",
     imagenes: [
       "imagenes/panera_cicurlar_con_diseño (2).jpeg",
@@ -905,7 +947,7 @@ function renderProductos(items, container, currentPage = 1, pageSize = ITEMS_PER
         <img src="${p.imagenes[0]}" alt="${p.nombre}">
         <div class="prod-info">
           <h4>${p.nombre}</h4>
-          <p>${p.precio}</p>
+          <p><button class="precio-pill" onclick="event.stopPropagation(); abrirDetalle(${p.id})" aria-label="Consultar precio de ${p.nombre}">${p.precio}</button></p>
         </div>
       `;
       card.addEventListener('click', () => abrirDetalle(p.id));
@@ -930,6 +972,8 @@ function renderProductos(items, container, currentPage = 1, pageSize = ITEMS_PER
   if (paginationContainer) {
     paginationContainer.style.pointerEvents = 'auto';
   }
+    // Re-bind press/animation handlers for buttons created dynamically
+    try{ setupPrecioPillPressEffects(); }catch(e){}
 }, 100);
 }
 
@@ -1087,7 +1131,13 @@ function abrirDetalle(id, options = {}){
   }
 
   document.getElementById('detalleNombre').textContent = productoActual.nombre;
-  document.getElementById('detallePrecio').textContent = productoActual.precio;
+  const precioElem = document.getElementById('detallePrecio');
+  const precioRaw = (productoActual.precio || '').toString().trim();
+  if (/consultar/i.test(precioRaw) || precioRaw === '') {
+    precioElem.textContent = 'Escríbenos y te damos el precio de esta pieza única';
+  } else {
+    precioElem.textContent = precioRaw;
+  }
   // Preparar descripción: decodificar entidades y permitir HTML (<br>, <p>, <a>)
   const descripcionRaw = productoActual.descripcion || '';
   function decodeHtmlEntities(str){
@@ -1246,6 +1296,41 @@ function irAWhatsapp(){
   const url = `https://wa.me/${numeroWhatsapp}?text=${encodeURIComponent(mensaje)}`;
   window.open(url, '_blank');
 }
+
+/* ===================== PILL PRESS EFFECT (mobile & desktop) ===================== */
+function setupPrecioPillPressEffects(){
+  // Use pointer events to cover mouse, touch and pen
+  const addPress = (el)=> el.classList.add('pressed');
+  const removePress = (el)=> el.classList.remove('pressed');
+  const pills = document.querySelectorAll('.precio-pill');
+  if(!pills.length) return;
+  pills.forEach(p => {
+    if (p.dataset.prepared === 'true') return; // avoid duplicate listeners
+    p.dataset.prepared = 'true';
+    const onDown = (e) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      addPress(p);
+      // trigger brief color-change animation
+      p.classList.remove('active-anim');
+      // force reflow to restart animation
+      void p.offsetWidth;
+      p.classList.add('active-anim');
+      // Short vibration if supported
+      try{ if (navigator.vibrate) navigator.vibrate(12); }catch(err){}
+    };
+    const clear = () => removePress(p);
+    p.addEventListener('pointerdown', onDown, {passive:true});
+    p.addEventListener('pointerup', clear);
+    p.addEventListener('pointercancel', clear);
+    p.addEventListener('pointerleave', clear);
+    // cleanup animation class after it ends so it can be retriggered next tap
+    p.addEventListener('animationend', () => p.classList.remove('active-anim'));
+  });
+}
+
+window.addEventListener('load', () => {
+  setupPrecioPillPressEffects();
+});
 </script>
 
 </body>
